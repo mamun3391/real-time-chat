@@ -1,6 +1,6 @@
 const express = require('express');
-const {fs} = require('node:fs');
-const {https} = require('node:https');
+const fs = require('fs');
+const https = require('https');
 const {createServer} = require('node:http');
 const {join} = require('node:path');
 const {Server} = require('socket.io');
@@ -8,10 +8,15 @@ const {Server} = require('socket.io');
 const app = express();
 // const server = createServer(app);
 // const io = new Server(server);
+/*const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/nodejs.druto.app/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/nodejs.druto.app/fullchain.pem')
+};*/
 const options = {
-    key: fs.readFileSync('/path/to/your/private.key'),
-    cert: fs.readFileSync('/path/to/your/certificate.crt')
+    key: fs.readFileSync((__dirname, 'certs/privkey.pem')),
+    cert: fs.readFileSync(join(__dirname, 'certs/fullchain.pem'))
 };
+
 
 const server = https.createServer(options, app);
 const io = new Server(server);
